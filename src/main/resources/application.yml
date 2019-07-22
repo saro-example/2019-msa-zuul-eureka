@@ -44,4 +44,4 @@ ribbon:
   # 제한시간 : 연결 / 소켓 / 리드
   ConnectTimeout: 500
   SocketTimeut: 500
-  ReadTimeout: 5000
+  ReadTimeout: 2000
