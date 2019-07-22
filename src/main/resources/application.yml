@@ -1,10 +1,17 @@
 server.port: ${PORT:8080}
-spring.application.name: zuul
+spring:
+  application.name: zuul
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
 
 zuul:
   ignoredServices: "*"
   routes:
-    SPRING-CLOUD-EUREKA-CLIENT: "/client/**"
+    spring-cloud-eureka-client:
+      path: "/client/**"
+      retryable: true
 
 endpoints:
   restart.enabled: true
@@ -26,10 +33,15 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 
+
 ribbon:
+  # 재시도여부 / 재시도횟수 / 다른서버로재시도횟수
   retryable: true
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 5
+  # 현 클라이언트의 모든 재시도 여부
   OkToRetryOnAllOperations: true
-  ConnectTimeout: 30000
-  ReadTimeout: 30000
+  # 제한시간 : 연결 / 소켓 / 리드
+  ConnectTimeout: 500
+  SocketTimeut: 500
+  ReadTimeout: 5000
